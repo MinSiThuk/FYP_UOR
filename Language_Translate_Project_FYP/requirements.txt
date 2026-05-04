@@ -1,4 +1,0 @@
-flask
-googletrans
-PyPDF2
-python-docx
