@@ -1,0 +1,204 @@
+/* Global theme */
+:root {
+  color-scheme: dark;
+  font-family: 'Inter', sans-serif;
+  --surface: rgba(15, 23, 42, 0.9);
+  --surface-strong: rgba(15, 23, 42, 0.98);
+  --border: rgba(148, 163, 184, 0.16);
+  --accent: #38bdf8;
+  --accent-hover: #0ea5e9;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 28%),
+    linear-gradient(180deg, #020617 0%, #0f172a 58%, #020617 100%);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.08), transparent 20%),
+    radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.08), transparent 20%);
+  pointer-events: none;
+}
+
+.glass-card {
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(24px);
+}
+
+.card-panel {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.card-panel:hover {
+  transform: translateY(-2px);
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(56, 189, 248, 0.24);
+}
+
+.history-empty {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px dashed rgba(148, 163, 184, 0.22);
+}
+
+.btn-primary,
+.accent {
+  background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 100%);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 16px 40px rgba(14, 165, 233, 0.18);
+}
+
+.btn-primary:hover,
+.accent:hover {
+  background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%);
+}
+
+.btn-secondary {
+  background-color: rgba(148, 163, 184, 0.12);
+  color: var(--text);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(148, 163, 184, 0.18);
+}
+
+.btn-history {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.75));
+  color: #ffffff;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 12px 30px rgba(14, 165, 233, 0.15);
+  backdrop-filter: blur(12px);
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-history:hover {
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.14), rgba(15, 23, 42, 0.92));
+  border-color: rgba(56, 189, 248, 0.75);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 40px rgba(14, 165, 233, 0.22);
+}
+
+.btn-history svg {
+  stroke: #cbd5e1;
+}
+
+input[type='file'] {
+  color: var(--text);
+}
+
+textarea,
+select,
+input,
+button {
+  font: inherit;
+}
+
+textarea,
+select {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: var(--text);
+}
+
+textarea::placeholder,
+input::placeholder {
+  color: rgba(248, 250, 252, 0.55);
+}
+
+select {
+  padding-right: 2.5rem;
+  background-image: linear-gradient(45deg, transparent 50%, rgba(248, 250, 252, 0.65) 50%),
+    linear-gradient(135deg, rgba(248, 250, 252, 0.65) 50%, transparent 50%);
+  background-position: calc(100% - 1rem) calc(50% - 0.25rem), calc(100% - 0.75rem) calc(50% - 0.25rem);
+  background-size: 0.5rem 0.5rem, 0.5rem 0.5rem;
+  background-repeat: no-repeat;
+}
+
+.nav-link {
+  color: #94a3b8;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+}
+
+.feature-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  color: #cbd5e1;
+}
+
+.info-card {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 28px;
+  padding: 1.6rem;
+}
+
+.info-card p {
+  color: #cbd5e1;
+}
+
+.text-link {
+  color: #7dd3fc;
+  text-decoration: underline;
+}
+
+.footer-note {
+  color: rgba(248, 250, 252, 0.68);
+}
+
+.input-field {
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+}
+
+.hero-subtitle {
+  color: #94a3b8;
+}
+
+.icon-button {
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.icon-button:hover {
+  background: rgba(56, 189, 248, 0.14);
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+}

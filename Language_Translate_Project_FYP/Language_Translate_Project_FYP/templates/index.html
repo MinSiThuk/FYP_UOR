@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="grid gap-8 lg:grid-cols-2">
+    <article class="glass-card rounded-[32px] border border-slate-700 bg-slate-950/40 p-8">
+        <h2 class="text-3xl font-semibold">Text translation</h2>
+        <p class="mt-4 text-slate-400">Translate plain text quickly with a dedicated page for typing or pasting content.</p>
+        <div class="mt-8 space-y-6">
+            <p class="text-slate-300">Use the text translator when you want a focused experience for short or long text content.</p>
+            <a href="{{ url_for('text_translation') }}" class="btn-primary inline-flex items-center justify-center w-full rounded-3xl px-6 py-4 text-base font-semibold">Go to Text Translator</a>
+        </div>
+    </article>
+
+    <article class="glass-card rounded-[32px] border border-slate-700 bg-slate-950/40 p-8">
+        <h2 class="text-3xl font-semibold">File translation</h2>
+        <p class="mt-4 text-slate-400">Upload PDF or DOCX files and translate the extracted document text with a dedicated workflow.</p>
+        <div class="mt-8 space-y-6">
+            <p class="text-slate-300">This page is optimized for document translation and file uploads only.</p>
+            <a href="{{ url_for('file_translation') }}" class="btn-primary inline-flex items-center justify-center w-full rounded-3xl px-6 py-4 text-base font-semibold">Go to File Translator</a>
+        </div>
+    </article>
+</div>
+{% endblock %}

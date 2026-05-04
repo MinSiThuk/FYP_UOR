@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="max-w-6xl w-full space-y-8">
+        <header class="text-center">
+            <p class="text-sm uppercase tracking-[0.3em] text-cyan-300 font-semibold mb-3">Translation History</p>
+            <h1 class="text-4xl sm:text-5xl font-semibold">Saved translations ready for review.</h1>
+            <p class="mt-4 max-w-3xl mx-auto text-base leading-7 hero-subtitle">Your recent translations are stored securely and displayed here in an easy-to-scan timeline layout.</p>
+            {% if history %}
+            <form method="post" action="/clear_history" id="clear-history-form" class="mt-6">
+                <button id="clear-history-btn" type="button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-3xl transition duration-200 shadow-lg shadow-red-500/20">Clear All History</button>
+            </form>
+            {% endif %}
+        </header>
+
+        <section class="glass-card rounded-[32px] p-8">
+            <div class="grid gap-6">
+                {% for item in history %}
+                <article class="card-panel rounded-3xl p-6">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm uppercase tracking-[0.3em] text-slate-400">{{ item[4] }}</p>
+                            <p class="text-lg font-semibold text-white mt-2">Translation record</p>
+                        </div>
+                        <span class="feature-pill">{{ item[3] | upper }}</span>
+                    </div>
+
+                    <div class="mt-6 grid gap-4 md:grid-cols-2">
+                        <div class="rounded-3xl border border-slate-700 bg-slate-950/50 p-5">
+                            <p class="text-sm font-semibold text-slate-400 mb-3">Original</p>
+                            <p class="whitespace-pre-wrap text-slate-100">{{ item[1] }}</p>
+                        </div>
+                        <div class="rounded-3xl border border-slate-700 bg-slate-950/50 p-5">
+                            <p class="text-sm font-semibold text-slate-400 mb-3">Translated</p>
+                            <p class="whitespace-pre-wrap text-slate-100">{{ item[2] }}</p>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+            {% if history|length == 0 %}
+            <div class="mt-6 history-empty rounded-3xl p-6 text-center text-slate-300">
+                No translation history found yet. Start translating on the <a href="/" class="text-cyan-300 underline">main page</a>.
+            </div>
+            {% endif %}
+        </section>
+
+        <div class="text-center">
+            <a href="/" class="btn-primary inline-flex items-center justify-center rounded-3xl px-8 py-4 text-base font-semibold">Back to Translator</a>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-8 max-w-md w-full mx-4">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-red-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3">Clear All History?</h3>
+                <p class="text-slate-400 mb-8">This action cannot be undone. All your translation history will be permanently deleted.</p>
+                <div class="flex gap-3">
+                    <button id="cancel-btn" class="flex-1 btn-secondary rounded-2xl py-3 px-6 font-semibold transition duration-200">Cancel</button>
+                    <button id="confirm-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-2xl transition duration-200 shadow-lg shadow-red-500/20">Clear History</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const clearHistoryBtn = document.getElementById('clear-history-btn');
+        const confirmModal = document.getElementById('confirm-modal');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const confirmBtn = document.getElementById('confirm-btn');
+        const clearHistoryForm = document.getElementById('clear-history-form');
+
+        clearHistoryBtn.addEventListener('click', () => {
+            confirmModal.classList.remove('hidden');
+            confirmModal.classList.add('flex');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            confirmModal.classList.add('hidden');
+            confirmModal.classList.remove('flex');
+        });
+
+        confirmBtn.addEventListener('click', () => {
+            clearHistoryForm.submit();
+        });
+
+        // Close modal when clicking outside
+        confirmModal.addEventListener('click', (e) => {
+            if (e.target === confirmModal) {
+                confirmModal.classList.add('hidden');
+                confirmModal.classList.remove('flex');
+            }
+        });
+    </script>
+</body>
+</html>

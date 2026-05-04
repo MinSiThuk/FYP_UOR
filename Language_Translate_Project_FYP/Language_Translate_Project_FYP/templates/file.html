@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="glass-card rounded-[32px] p-8 border border-slate-700">
+    <div class="space-y-8">
+        <div class="grid gap-4 sm:grid-cols-3">
+            <div class="feature-pill">⚡ Fast translation</div>
+            <div class="feature-pill">📄 PDF / DOCX only</div>
+            <div class="feature-pill">💾 Saved history</div>
+        </div>
+
+        <div class="rounded-[28px] border border-slate-700 bg-slate-950/40 p-6 space-y-5">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-xl font-semibold">Translate documents</h2>
+                    <p class="text-sm text-slate-400">Upload a PDF or DOCX and get a translated version of its text.</p>
+                </div>
+            </div>
+
+            <div class="grid gap-4">
+                <input type="file" id="file-upload" accept=".pdf,.docx" class="input-field w-full rounded-2xl px-4 py-3" />
+                <select id="lang-select" class="input-field w-full rounded-2xl px-4 py-3">
+                    {% for code, name in langs.items() %}
+                    <option value="{{ code }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+                <button id="upload-btn" class="btn-primary rounded-3xl px-6 py-4 text-base font-semibold">Upload & Translate</button>
+                <p class="text-sm text-slate-400">Supported file types: PDF, DOCX. The file text is extracted and translated automatically.</p>
+            </div>
+        </div>
+
+        <div class="rounded-[28px] border border-slate-700 bg-slate-950/40 p-6 space-y-5">
+            <div class="flex items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-semibold">Translated document preview</h2>
+                    <p class="text-sm text-slate-400">Copy or listen to the extracted translation result.</p>
+                </div>
+                <button id="copy-btn" type="button" class="icon-button inline-flex h-12 w-12 items-center justify-center rounded-2xl" title="Copy to clipboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                        <path d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+                    </svg>
+                </button>
+            </div>
+            <textarea id="translated-output" class="input-field w-full min-h-[320px] rounded-3xl p-5 resize-none" readonly placeholder="Translated text will appear here..."></textarea>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const uploadBtn = document.getElementById('upload-btn');
+    const fileUpload = document.getElementById('file-upload');
+    const langSelect = document.getElementById('lang-select');
+    const translatedOutput = document.getElementById('translated-output');
+    const copyBtn = document.getElementById('copy-btn');
+
+    uploadBtn.addEventListener('click', async () => {
+        const file = fileUpload.files[0];
+        const lang = langSelect.value;
+        if (!file) {
+            alert('Please select a file to upload.');
+            return;
+        }
+        uploadBtn.disabled = true;
+        uploadBtn.textContent = 'Uploading...';
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('lang', lang);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            if (data.translated) {
+                translatedOutput.value = data.translated;
+            } else {
+                alert('Error: ' + data.error);
+            }
+        } catch (error) {
+            alert('Network error: ' + error.message);
+        } finally {
+            uploadBtn.disabled = false;
+            uploadBtn.textContent = 'Upload & Translate';
+        }
+    });
+
+    copyBtn.addEventListener('click', async () => {
+        const text = translatedOutput.value;
+        if (!text) {
+            alert('No text to copy.');
+            return;
+        }
+        try {
+            await navigator.clipboard.writeText(text);
+            copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-400"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>';
+            setTimeout(() => {
+                copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>';
+            }, 2000);
+        } catch (error) {
+            alert('Failed to copy text: ' + error.message);
+        }
+    });
+</script>
+{% endblock %}

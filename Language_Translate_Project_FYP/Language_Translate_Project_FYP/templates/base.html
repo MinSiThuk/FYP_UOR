@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Translator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="min-h-screen flex items-center justify-center px-4 py-8">
+        <div class="max-w-6xl w-full space-y-8">
+            <header class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <p class="text-sm uppercase tracking-[0.3em] text-cyan-300 font-semibold mb-3">Language Translator</p>
+                    <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight">Translate with a clean, professional interface.</h1>
+                </div>
+                <nav class="flex flex-wrap gap-3 items-center justify-start md:justify-end">
+                    <a href="{{ url_for('index') }}" class="btn-secondary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold">Home</a>
+                    <a href="{{ url_for('text_translation') }}" class="btn-secondary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold">Text</a>
+                    <a href="{{ url_for('file_translation') }}" class="btn-secondary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold">File</a>
+                    <a href="{{ url_for('history') }}" class="btn-primary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold">History</a>
+                </nav>
+            </header>
+
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
